@@ -17,9 +17,12 @@ include_once('../events/ShowEvents.php');
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
          <h4 class="w3-center">Events And News</h4>
+
+    <!--Displaing news Heading -->
           <?php foreach ($headilines as $h) {?>
           <button class="w3-tag w3-small w3-theme-d3" onclick="news(<?php echo $h['eID'];?>)"> <?php echo $h['eheading'];?></button><br>
         <?php }?>
+
          </div>
       </div>
       <br>
@@ -142,8 +145,8 @@ include_once('../events/ShowEvents.php');
          <?php }?>
 
         </div>
-        <button type="button" onclick="reaction('images/<?= htmlspecialchars($ev['eID']);?>')" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-        <button type="button" onclick="comment('images/<?= htmlspecialchars($ev['eID']);?>')" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
+        <button type="button" onclick="reaction('<?= htmlspecialchars($ev['eID']);?>')" class="w3-button w3-theme-d1 w3-margin-bottom"  id="likebtn<?= htmlspecialchars($ev['eID']);?>"><i class="fa fa-thumbs-up"></i><?=$sEvent->countLikes($ev['eID']);?>  Like</button> 
+        <button type="button" onclick="comment('<?= htmlspecialchars($ev['eID']);?>')" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i><?=$sEvent->countComments($ev['eID']);?>Comment</button> 
       </div>
     <?php } ?>
 
