@@ -1,3 +1,8 @@
+/*
+*data contacted by customer in web
+#Record sent to the db via ajax
+*/
+
 $(document).on('submit','#req', function(event){
 	event.preventDefault();
 	var validate = '';
@@ -33,7 +38,6 @@ if(validate == '0123'){
         		$('#cont').trigger('reset');
         		$('#contacted').find('.contact-body').text(event.msg);
         		action = event.action;
-        		showInd();
         	}
         },
         error: function(event){
@@ -156,7 +160,10 @@ $(document).on('submit', '#sign-up-form', function(event){
       details[i] = cdetails[i].val();
     }
   }
-
+/*
+#Validating id the customer filled all the required field
+#On registration
+ */
   if(validation == '012345678'){
      if($('#cPass').val() == $('#cCPass').val()){
           $.ajax({
@@ -274,3 +281,57 @@ function w3_close(id){
     console.log(days+' '+hrs+' '+min+' '+sec);
     console.log("counting hours");
   }
+
+/*
+*Function Fo handling comment
+*begin here
+*/
+const x = document.getElementById("comment");
+
+function comment(id){
+      $("#cusCom").val("");
+      x.style.display = "block";
+      document.getElementById("ceid").value = id;
+}
+
+
+$("#comment-btn").click(function(){
+  var txt = $("#cusCom").val();
+  
+  //Ajax Sending comment
+
+  var id = document.getElementById("ceid").value;
+
+  $.ajax({
+    url: "../process/comment.php",
+    type: "post",
+    dataType: "json",
+    data: {com: txt, eid: id},
+    success: function(res){
+      if(res.success="success"){
+         $("#comment").find(".commented").text(res.msg);
+         $("#cusCom").trigger("reset");
+     }
+    },
+    error: function(){
+      alert("You have an Error on Your Server");
+    }
+  });
+});
+
+function reaction(id){
+  $.ajax({
+    url: "../process/eventReaction.php",
+    type: "post",
+    dataType: "json",
+    data: {eid:id},
+    success: function(resp){
+      if(resp.reacted == "success")
+      document.getElementById("likebtn"+id).disabled="disabled";
+      else alert(resp.fail);
+    },
+    error: function(){
+      alert("There was a problem in Server please try again");
+    }
+  });
+}
