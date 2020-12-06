@@ -1,6 +1,13 @@
 <?php
 include_once('../dbc/QueryExcution.php');
 include_once('../interface/Shows.php');
+
+
+/*
+*After importing the class above
+#This Class build the select query ie 
+//restricting data to be fetch ready to use on page
+*/
 class ShowEvent extends QueryExcution implements ishows{
 	public function __constract(){
 		parent:: __constract();
@@ -119,6 +126,27 @@ class ShowEvent extends QueryExcution implements ishows{
 		        LIMIT 1
 		        ";	
 		return $this->getRow($sql, [$ev]);
+	}
+
+	public function countLikes($eid){
+
+		$qry = "SELECT likes FROM tbl_events WHERE eID = ?";
+		$result = $this->getRow($qry, [$eid]);
+		return $result['likes'];
+	}
+
+	public function countComments($eid){
+		$qry = "SELECT COUNT(id) as c FROM tbl_comments WHERE cEId = ?";
+		$result = $this->getRow($qry, [$eid]);
+		return $result['c'];	
+	}
+
+
+	public function showRecentComment($eid){
+
+		$qry = "SELECT comment_desc as com FROM tbl_comments WHERE cEid = ? ORDER BY comment_date DESC;";
+		$result = $this->getRows($qry, [$eid]);
+		return $result;
 	}
 }
 $sEvent = new ShowEvent();
